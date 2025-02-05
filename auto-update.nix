@@ -37,7 +37,7 @@
           exit 1
         fi
 
-        sudo cd $CONFIG_DIR
+        cd $CONFIG_DIR
 
         sudo git fetch origin $REPO_BRANCH
 
