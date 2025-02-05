@@ -19,7 +19,7 @@
   config = lib.mkIf config.services.nixosAutoUpdate.enable {
     environment.systemPackages = [ pkgs.git ];
 
-    environment.etc."nixos/check-updates.sh" = {
+    environment.etc."nixos/update-config.sh" = {
       mode = "0755";
       text = ''
         #!/bin/bash
@@ -110,7 +110,7 @@
       
       serviceConfig = {
         Type = "simple";
-        ExecStart = "${pkgs.bash}/bin/bash -c 'while true; do /etc/nixos/check-updates.sh; sleep 5; done'";
+        ExecStart = "${pkgs.bash}/bin/bash -c 'while true; do /etc/nixos/update-config.sh; sleep 5; done'";
         Restart = "always";
         RestartSec = "5s";
       };
