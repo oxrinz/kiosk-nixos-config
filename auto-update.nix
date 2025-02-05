@@ -15,11 +15,6 @@
 
   config = lib.mkIf config.services.nixosAutoUpdate.enable {
     environment.systemPackages = [ pkgs.git ];
-    
-    environment.etc."nixos/update-config.sh" = {
-      mode = "0755";  # Make sure it's executable
-      source = ./update-config.sh;  # Reference your external script
-    };
 
     systemd.services.nixos-config-update = {
       description = "NixOS Configuration Update Service";
@@ -27,7 +22,7 @@
       wants = [ "network-online.target" ];
       serviceConfig = {
         Type = "simple";
-        ExecStart = "/etc/nixos/update-config.sh";
+        ExecStart = "${pkgs.bash}/bin/bash -c  /etc/nixos/update-config.sh";
         Restart = "always";
         RestartSec = "5s";
       };

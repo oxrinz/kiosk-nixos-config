@@ -97,6 +97,7 @@
     networkmanager
     xterm
     unclutter
+    bash
   ];
 
   system.stateVersion = "24.05";
