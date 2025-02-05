@@ -39,7 +39,7 @@
 
   services.nixosAutoUpdate = {
     enable = true;
-    repoUrl = "https://github.com/oxrinz/kiosk-nixos-config";
+    repoUrl = "https://github.com/oxrinz/kiosk-nixos-config.git";
   };
 
   systemd.services.kiosk-display = {
