@@ -97,6 +97,7 @@
     networkmanager
     xterm
     unclutter
+    git
     bash
   ];
 
