@@ -52,7 +52,7 @@
       User = "kiosk";
       Restart = "always";
       ExecStart =
-        "${pkgs.chromium}/bin/chromium --incognito --noerrdialogs http://192.168.1.70:3000";
+        "${pkgs.chromium}/bin/chromium --incognito --noerrdialogs https://oxrinz.com/sumika";
       RestartSec = "15";
     };
   };
@@ -86,8 +86,6 @@
       allowedTCPPorts = [ 22 ];
     };
   };
-
-  console = { keyMap = "us"; };
 
   environment.systemPackages = with pkgs; [
     vim
