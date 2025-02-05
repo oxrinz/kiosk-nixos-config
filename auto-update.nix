@@ -30,16 +30,16 @@
           echo "$1"
         }
 
-        mkdir -p $BACKUP_DIR
+        sudo mkdir -p $BACKUP_DIR
 
-        if ! git ls-remote $REPO_URL &>/dev/null; then
+        if ! sudo git ls-remote $REPO_URL &>/dev/null; then
           log_message "Cannot reach git remote, skipping update"
           exit 1
         fi
 
-        cd $CONFIG_DIR
+        sudo cd $CONFIG_DIR
 
-        git fetch origin $REPO_BRANCH
+        sudo git fetch origin $REPO_BRANCH
 
         LOCAL_HASH=$(git -C $CONFIG_DIR rev-parse HEAD)
         REMOTE_HASH=$(git -C $CONFIG_DIR rev-parse origin/$REPO_BRANCH)
@@ -51,7 +51,7 @@
         backup_timestamp=$(date +%Y%m%d_%H%M%S)
         cp $CONFIG_DIR/configuration.nix $BACKUP_DIR/configuration.nix.$backup_timestamp
 
-        if git -C $CONFIG_DIR pull origin $REPO_BRANCH; then
+        if sudo git -C $CONFIG_DIR pull origin $REPO_BRANCH; then
           log_message "Pulled new configuration"
           if sudo -E nixos-rebuild test; then
             log_message "Configuration test successful, applying changes"
@@ -64,7 +64,7 @@
             fi
           else
             log_message "Configuration test failed, keeping current configuration"
-            git -C $CONFIG_DIR reset --hard $LOCAL_HASH
+            sudo git -C $CONFIG_DIR reset --hard $LOCAL_HASH
           fi
         else
           log_message "Failed to pull updates"
@@ -86,7 +86,7 @@
         ];
         ExecStart = "${pkgs.bash}/bin/bash /etc/nixos/update-config.sh";
         Restart = "always";
-        RestartSec = "5s";
+        RestartSec = "15s";
       };
       wantedBy = [ "multi-user.target" ];
     };

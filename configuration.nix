@@ -51,7 +51,6 @@
       Type = "simple";
       User = "kiosk";
       Restart = "always";
-      # The --kiosk flag launches Chromium in fullscreen kiosk mode.
       ExecStart =
         "${pkgs.chromium}/bin/chromium --kiosk --incognito --noerrdialogs https://oxrinz.com/sumika";
       RestartSec = "15";
