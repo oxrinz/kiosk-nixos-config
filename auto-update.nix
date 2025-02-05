@@ -1,5 +1,4 @@
-{ config, lib, pkgs, ... }:
-{
+{ config, lib, pkgs, ... }: {
   options.services.nixosAutoUpdate = {
     enable = lib.mkEnableOption "NixOS auto-update service";
     repoUrl = lib.mkOption {
@@ -12,7 +11,7 @@
       description = "Git branch to track";
     };
   };
-  
+
   config = lib.mkIf config.services.nixosAutoUpdate.enable {
     environment.systemPackages = [ pkgs.git ];
 
@@ -77,7 +76,13 @@
       wants = [ "network-online.target" ];
       serviceConfig = {
         Type = "simple";
-        ExecStart = ["${pkgs.bash}/bin/bash /etc/nixos/update-config.sh"];
+        WorkingDirectory = "/etc/nixos";
+        Environment = [
+          "PATH=${pkgs.git}/bin:${pkgs.bash}/bin:/run/current-system/sw/bin"
+          "HOME=/root"
+        ];
+        ExecStart =
+          "${pkgs.bash}/bin/bash -c 'while true; do /etc/nixos/check-updates.sh; sleep 5; done'";
         Restart = "always";
         RestartSec = "5s";
       };
