@@ -53,14 +53,14 @@
 
         if git -C $CONFIG_DIR pull origin $REPO_BRANCH; then
           log_message "Pulled new configuration"
-          if sudo nixos-rebuild test; then
+          if sudo -E nixos-rebuild test; then
             log_message "Configuration test successful, applying changes"
-            if sudo nixos-rebuild switch; then
+            if sudo -E nixos-rebuild switch; then
               log_message "Successfully updated NixOS configuration"
             else
               log_message "Failed to switch to new configuration"
               cp $BACKUP_DIR/configuration.nix.$backup_timestamp $CONFIG_DIR/configuration.nix
-              sudo nixos-rebuild switch
+              sudo -E nixos-rebuild switch
             fi
           else
             log_message "Configuration test failed, keeping current configuration"
@@ -82,7 +82,7 @@
         Environment = [
           "PATH=${pkgs.git}/bin:${pkgs.bash}/bin:/run/current-system/sw/bin"
           "HOME=/root"
-          "NIX_PATH=nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos:nixos-config=/etc/nixos/configuration.nix:/nix/var/nix/profiles/per-user/root/channels"
+          "NIX_PATH=nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos:nixos-config=/etc/nixos/configuration.nix"
         ];
         ExecStart = "${pkgs.bash}/bin/bash /etc/nixos/update-config.sh";
         Restart = "always";
