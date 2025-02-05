@@ -82,7 +82,7 @@
           "HOME=/root"
         ];
         ExecStart =
-          "${pkgs.bash}/bin/bash -c 'while true; do /etc/nixos/update-config.sh; sleep 5; done'";
+          "${pkgs.bash}/bin/bash /etc/nixos/update-config.sh";
         Restart = "always";
         RestartSec = "5s";
       };
