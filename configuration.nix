@@ -75,13 +75,13 @@
     wireless = {
       enable = true;
       networks = {
-        "2good_8GHz" = {
-          psk = "PASSWORD";
+        "Zyxel_B981" = {
+          psk = "X4MXD4XXJA";
           priority = 10;
         };
       };
     };
-    # Moved firewall configuration inside networking
+
     firewall = {
       enable = true;
       allowedTCPPorts = [ 22 ];
