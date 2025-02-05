@@ -37,7 +37,9 @@
           exit 1
         fi
 
-        git -C $CONFIG_DIR fetch origin $REPO_BRANCH
+        cd $CONFIG_DIR
+
+        git fetch origin $REPO_BRANCH
 
         LOCAL_HASH=$(git -C $CONFIG_DIR rev-parse HEAD)
         REMOTE_HASH=$(git -C $CONFIG_DIR rev-parse origin/$REPO_BRANCH)
@@ -80,9 +82,9 @@
         Environment = [
           "PATH=${pkgs.git}/bin:${pkgs.bash}/bin:/run/current-system/sw/bin"
           "HOME=/root"
+          "NIX_PATH=nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos:nixos-config=/etc/nixos/configuration.nix:/nix/var/nix/profiles/per-user/root/channels"
         ];
-        ExecStart =
-          "${pkgs.bash}/bin/bash /etc/nixos/update-config.sh";
+        ExecStart = "${pkgs.bash}/bin/bash /etc/nixos/update-config.sh";
         Restart = "always";
         RestartSec = "5s";
       };
