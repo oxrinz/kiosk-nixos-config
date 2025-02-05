@@ -1,0 +1,104 @@
+{ config, lib, pkgs, ... }: {
+  imports = [ ./auto-update.nix ./hardware-configuration.nix ];
+
+  boot.loader.grub = {
+    enable = true;
+    device = "/dev/mmcblk1";
+  };
+
+  services.openssh = {
+    enable = true;
+    permitRootLogin = "yes";
+    settings = { PasswordAuthentication = false; };
+  };
+
+  users.users.kiosk = {
+    isNormalUser = true;
+    extraGroups = [ "wheel" ];
+    initialPassword = "megasush";
+  };
+
+  services.xserver.serverLayoutSection = ''
+    Option "StandbyTime" "0"
+    Option "SuspendTime" "0"
+    Option "OffTime" "0"
+    Option "BlankTime" "0"
+  '';
+
+  services.xserver = {
+    enable = true;
+    displayManager = {
+      autoLogin = {
+        enable = true;
+        user = "kiosk";
+      };
+      defaultSession = "none+openbox";
+    };
+    windowManager.openbox.enable = true;
+  };
+
+  services.nixosAutoUpdate = {
+    enable = true;
+    repoUrl =
+      "https://github.com/arrien/kiosk-nixos-config"; # Changed from repoPath to repoUrl to match the module
+  };
+
+  systemd.services.kiosk-display = {
+    description = "Kiosk Display";
+    after = [ "network.target" ];
+    wantedBy = [ "multi-user.target" ];
+    environment = { DISPLAY = ":0"; };
+    serviceConfig = {
+      Type = "simple";
+      User = "kiosk";
+      Restart = "always";
+      ExecStart =
+        "${pkgs.chromium}/bin/chromium --incognito --noerrdialogs http://192.168.1.70:3000";
+      RestartSec = "15";
+    };
+  };
+
+  systemd.services.unclutter = {
+    description = "Hide cursor";
+    after = [ "xserver.service" ];
+    wantedBy = [ "multi-user.target" ];
+    environment = { DISPLAY = ":0"; };
+    serviceConfig = {
+      Type = "simple";
+      User = "kiosk";
+      ExecStart = "${pkgs.unclutter}/bin/unclutter";
+      Restart = "always";
+    };
+  };
+
+  networking = {
+    wireless = {
+      enable = true;
+      networks = {
+        "2good_8GHz" = {
+          psk = "PASSWORD";
+          priority = 10;
+        };
+      };
+    };
+    # Moved firewall configuration inside networking
+    firewall = {
+      enable = true;
+      allowedTCPPorts = [ 22 ];
+    };
+  };
+
+  console = { keyMap = "fi"; };
+
+  environment.systemPackages = with pkgs; [
+    vim
+    wget
+    chromium
+    openbox
+    networkmanager
+    xterm
+    unclutter
+  ];
+
+  system.stateVersion = "24.05";
+}
