@@ -87,7 +87,7 @@
     };
   };
 
-  console = { keyMap = "fi"; };
+  console = { keyMap = "us"; };
 
   environment.systemPackages = with pkgs; [
     vim
