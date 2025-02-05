@@ -37,10 +37,9 @@
     windowManager.openbox.enable = true;
   };
 
-  systemd.services.nixosAutoUpdate = {
+  services.nixosAutoUpdate = {
     enable = true;
-    repoUrl =
-      "https://github.com/oxrinz/kiosk-nixos-config"; # Changed from repoPath to repoUrl to match the module
+    repoUrl = "https://github.com/oxrinz/kiosk-nixos-config";
   };
 
   systemd.services.kiosk-display = {
