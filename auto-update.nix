@@ -27,7 +27,7 @@
       wants = [ "network-online.target" ];
       serviceConfig = {
         Type = "simple";
-        ExecStart = "${pkgs.bash}/bin/bash -c 'while true; do /etc/nixos/update-config.sh; sleep 3d; done'";
+        ExecStart = "/etc/nixos/update-config.sh";
         Restart = "always";
         RestartSec = "5s";
       };
