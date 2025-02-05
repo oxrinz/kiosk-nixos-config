@@ -53,14 +53,14 @@
 
         if git -C $CONFIG_DIR pull origin $REPO_BRANCH; then
           log_message "Pulled new configuration"
-          if nixos-rebuild test; then
+          if sudo nixos-rebuild test; then
             log_message "Configuration test successful, applying changes"
-            if nixos-rebuild switch; then
+            if sudo nixos-rebuild switch; then
               log_message "Successfully updated NixOS configuration"
             else
               log_message "Failed to switch to new configuration"
               cp $BACKUP_DIR/configuration.nix.$backup_timestamp $CONFIG_DIR/configuration.nix
-              nixos-rebuild switch
+              sudo nixos-rebuild switch
             fi
           else
             log_message "Configuration test failed, keeping current configuration"
