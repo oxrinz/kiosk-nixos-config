@@ -52,7 +52,7 @@
       User = "kiosk";
       Restart = "always";
       ExecStart =
-        "${pkgs.chromium}/bin/chromium --kiosk --incognito --noerrdialogs https://oxrinz.com/sumika";
+        "${pkgs.chromium}/bin/chromium --kiosk --incognito --noerrdialogs https://oxrinz.com/kiosk";
       RestartSec = "15";
     };
   };
