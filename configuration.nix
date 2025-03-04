@@ -52,7 +52,7 @@
       User = "kiosk";
       Restart = "always";
       ExecStart =
-        "${pkgs.chromium}/bin/chromium --kiosk --incognito --noerrdialogs https://oxrinz.com/kiosk";
+        "${pkgs.chromium}/bin/chromium --kiosk --incognito --noerrdialogs https://lainchan.org";
       RestartSec = "15";
     };
   };
